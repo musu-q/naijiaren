@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>你是哪种奶家人？</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;background:linear-gradient(160deg,#fff5e6,#ffe8cc,#ffd9a8);min-height:100vh;color:#4a3520}
+.app{max-width:480px;margin:0 auto;padding:20px 18px 40px}
+.view{display:none}.view.active{display:block}
+.home{text-align:center;padding:40px 0 16px}
+.ball{width:110px;height:110px;margin:0 auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff2b0,#ffd84d 55%,#f0b400);box-shadow:0 10px 30px rgba(240,180,0,.35),inset -6px -8px 14px rgba(200,140,0,.25);position:relative;animation:f 3s ease-in-out infinite}
+@keyframes f{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.ball::before,.ball::after{content:'';position:absolute;top:42%;width:11px;height:15px;border-radius:50%;background:#5a4210}
+.ball::before{left:30%}.ball::after{right:30%}
+.mouth{position:absolute;left:50%;top:58%;transform:translateX(-50%);width:30px;height:15px;border-radius:0 0 30px 30px;background:#5a4210}
+h1{font-size:28px;font-weight:800;margin:20px 0 8px}
+.sub{font-size:14px;color:#9a7b55;line-height:1.7;padding:0 10px}
+.badge{display:inline-block;margin:14px 0 20px;background:#fff;border-radius:20px;padding:6px 16px;font-size:12px;color:#c07a2a;box-shadow:0 2px 8px rgba(200,150,80,.15)}
+.btn{display:block;width:100%;border:none;border-radius:16px;padding:16px;font-size:17px;font-weight:700;font-family:inherit;cursor:pointer}
+.btn:active{transform:scale(.97)}
+.btn-p{background:linear-gradient(135deg,#ffb347,#ff8c42);color:#fff;box-shadow:0 6px 18px rgba(255,140,66,.35);margin-bottom:12px}
+.btn-s{background:#fff;color:#c07a2a;box-shadow:0 4px 14px rgba(200,150,80,.15);border:1.5px solid #ffe0b8}
+.top{display:flex;align-items:center;margin-bottom:18px}
+.back{background:none;border:none;font-size:22px;color:#9a7b55;padding:4px 8px;cursor:pointer}
+.pw{flex:1;margin:0 14px;background:#fff;border-radius:10px;height:10px;overflow:hidden}
+.pb{height:100%;width:0;background:linear-gradient(90deg,#ffb347,#ff8c42);transition:width .35s}
+.cnt{font-size:13px;color:#b08a5a;font-weight:600}
+.qn{font-size:12px;color:#c09a6a;font-weight:600;margin-bottom:8px}
+.qt{font-size:19px;font-weight:700;line-height:1.55;margin-bottom:22px}
+.opt{display:flex;align-items:center;width:100%;background:#fff;border:2px solid transparent;border-radius:14px;padding:15px 16px;margin-bottom:12px;cursor:pointer;text-align:left;font-size:15px;font-family:inherit;color:#4a3520;line-height:1.45;box-shadow:0 2px 10px rgba(200,150,80,.1)}
+.opt.sel{border-color:#ff8c42;background:#fff8f0}
+.key{width:26px;height:26px;border-radius:50%;background:#fff3e0;color:#e08a30;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0}
+.opt.sel .key{background:#ff8c42;color:#fff}
+.card{background:#fff;border-radius:24px;padding:28px 22px 24px;box-shadow:0 8px 30px rgba(200,150,80,.18);text-align:center;margin-top:6px}
+.iw{width:150px;height:150px;margin:0 auto 14px;border-radius:24px;background:linear-gradient(135deg,#fff3e0,#ffe0b8);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.iw img{width:100%;height:100%;object-fit:cover}
+.fb{font-size:72px}
+.rt{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:10px}
+.rc{background:#eef6ee;color:#4a9a4a}.rr{background:#e8f0ff;color:#3a6ad0}.rh{background:linear-gradient(135deg,#ffe0f0,#f0d8ff);color:#b040c0}
+.rn{font-size:26px;font-weight:800;margin-bottom:6px}
+.rd{font-size:14.5px;color:#7a6040;line-height:1.75;margin:14px 0 18px;text-align:left}
+.sb{background:#f7f2ea;border-radius:14px;padding:14px;margin-bottom:16px}
+.sl{font-size:11px;color:#b08a5a;margin-bottom:6px}
+.st{font-size:13px;color:#6a5540;line-height:1.6;text-align:left}
+.ra{display:flex;gap:10px}.ra .btn{padding:14px;font-size:15px;margin:0}
+.ra2 .btn{margin-top:10px}
+.gh{text-align:center;padding:10px 0 16px}
+.gt{font-size:24px;font-weight:800;margin-bottom:6px}
+.gp{font-size:14px;color:#b08a5a;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gc{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(200,150,80,.1);position:relative;cursor:pointer}
+.gc.lock{filter:grayscale(1);opacity:.45}
+.gi{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#fff3e0,#ffe8cc);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.gi img{width:100%;height:100%;object-fit:cover}
+.gfb{font-size:38px}
+.glock{font-size:34px;color:#c9b090}
+.gn{font-size:12px;font-weight:700;padding:8px 6px 9px;text-align:center;color:#6a5540}
+.gc.lock .gn{color:#b8a890}
+.dot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 2px #fff}
+.dc{background:#5bb85b}.dr{background:#4a8ad8}.dh{background:#c060d0}
+.hint{text-align:center;font-size:12px;color:#c0a080;margin-top:20px;line-height:1.6}
+.egg{background:linear-gradient(135deg,#ffe0f0,#f0d8ff);border-radius:16px;padding:16px;text-align:center;margin-top:18px;font-size:14px;font-weight:700;color:#b040c0;line-height:1.6;display:none}
+.egg.show{display:block}
+.mo{position:fixed;inset:0;background:rgba(60,40,20,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:100}
+.mo.show{display:flex}
+.mc{background:#fff;border-radius:22px;padding:24px 20px;max-width:340px;width:100%;text-align:center;max-height:80vh;overflow-y:auto}
+.mi{width:110px;height:110px;margin:0 auto 12px;border-radius:20px;background:linear-gradient(135deg,#fff3e0,#ffe0b8);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.mi img{width:100%;height:100%;object-fit:cover}
+.mn{font-size:22px;font-weight:800;margin-bottom:4px}
+.md{font-size:14px;color:#7a6040;line-height:1.7;margin:12px 0 18px;text-align:left}
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="v-home" class="view active">
+    <div class="home">
+      <div class="ball"><span class="mouth"></span></div>
+      <h1>你是哪种奶家人？</h1>
+      <p class="sub">奶蛙、奶蛋、奶狗、奶鼠……<br>15 道抽象题，测出你的奶家宇宙人格</p>
+      <div class="badge">✦ 隐藏款等你抽 ✦</div>
+    </div>
+    <button class="btn btn-p" id="start">开始测试</button>
+    <button class="btn btn-s" id="galleryBtn">我的图鉴 <span id="homeCount"></span></button>
+    <p class="hint">测过的角色会在图鉴里点亮<br>隐藏款需要特定行为模式才能触发</p>
+  </div>
+
+  <div id="v-quiz" class="view">
+    <div class="top">
+      <button class="back" id="quit">‹</button>
+      <div class="pw"><div class="pb" id="pb"></div></div>
+      <span class="cnt" id="cnt">1/15</span>
+    </div>
+    <div class="qn" id="qn">QUESTION 1</div>
+    <div class="qt" id="qt"></div>
+    <div id="opts"></div>
+  </div>
+
+  <div id="v-result" class="view">
+    <div class="card" id="card"></div>
+  </div>
+
+  <div id="v-gallery" class="view">
+    <div class="top">
+      <button class="back" id="galleryBack">‹</button>
+      <div style="flex:1;text-align:center;font-size:16px;font-weight:700;color:#6a5540;">我的奶家图鉴</div>
+      <div style="width:34px;"></div>
+    </div>
+    <div class="gh">
+      <div class="gt">奶家人图鉴</div>
+      <div class="gp" id="gp">已收集 0 / 13</div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="egg" id="egg">🎉 你已集齐全部奶家人格！<br>恭喜成为「奶家编外正式成员」</div>
+    <p class="hint">点击已解锁的角色查看人格详情<br>灰色角色为未解锁，快去测测看</p>
+  </div>
+</div>
+
+<div class="mo" id="mo"><div class="mc" id="mc"></div></div>
+
+<script>
+// ===== 1. 角色数据 =====
+var CHARS=[
+{id:'naiwa',name:'奶蛙',r:'common',em:'🐸',file:'naiwa.jpg',desc:'万恶之源。四肢细长、肚子滚圆，精神状态领先同龄人十年。你是那种在群里发最抽象表情包、半夜三点还在刷视频的人。别人笑你太疯癫，你笑别人看不穿。'},
+{id:'naidan',name:'奶蛋',r:'common',em:'🥚',file:'naidan.jpg',desc:'四肢全砍只剩一个圆球，表面摆烂天花板，实际暗藏“安迪（俺无敌）”的神力。你信奉能躺着绝不坐着，但关键时刻总能让所有人惊掉下巴。'},
+{id:'naigou',name:'奶狗',r:'common',em:'🐶',file:'naigou.jpg',desc:'四脚着地、咧嘴傻笑，智商不高但热情拉满。你是“手欠型”选手——看到会动的东西就想踹一脚。奶家宇宙需要你这种闲不住的活力源泉。'},
+{id:'naizhu',name:'奶猪',r:'common',em:'🐷',file:'naizhu.jpg',desc:'往地上一躺如二大爷，话不多但压迫感极强。你是“静静看着你表演”的观察者，不轻易表态，一开口就直击要害。摆烂是保护色，其实你比谁都清醒。'},
+{id:'naiji',name:'奶鸡',r:'common',em:'🐔',file:'naiji.jpg',desc:'会下奶蛋的神秘角色，奶家宇宙的繁衍之谜全靠它。你可能是那种“看着普通、实则撑起整个团队”的人。别人觉得你平平无奇，直到发现——没你不行。'},
+{id:'naidou',name:'奶豆',r:'common',em:'🟡',file:'naidou.jpg',desc:'体型极小的可爱路线选手。你是那种“存在感不大但谁都觉得你可爱”的人。不抢风头，却总能被记住。小小的身体里，藏着大大的萌力。'},
+{id:'naishu',name:'奶鼠',r:'rare',em:'🐭',file:'naishu.jpg',desc:'大圆耳朵、杰瑞既视感，情商低爱嘲讽，但一块奶酪就能收买。你是“嘴硬心软”的类型，表面阴阳怪气，实际特别好哄。'},
+{id:'naifen',name:'奶粉',r:'rare',em:'🥛',file:'naifen.jpg',desc:'奶鼠的官配克星，人称“奶鼠最严厉的母亲”。你是“靠谱到让人想依赖”的人，充电宝永远备好，计划永远有B方案。'},
+{id:'dounai',name:'豆奶',r:'rare',em:'🫘',file:'dounai.jpg',desc:'豆包AI与奶蛙的混血品种。你能正经聊天，也能突然抽象。脑子里住着两个灵魂，一个说“要理性”，一个说“要发疯”。'},
+{id:'naicha',name:'奶茶',r:'rare',em:'🧋',file:'naicha.jpg',desc:'日用品奶化代表。你是“让人上瘾”的类型——表面甜甜的，喝多了发现有点东西。社交能力很强，但只有少数人知道你真正的味道。'},
+{id:'sigmawai',name:'西格玛奶蛙',r:'hidden',em:'🗿',file:'sigmawai.jpg',desc:'奶蛙的Sigma梗变体，主打独狼气场。你不需要合群，不需要解释，一个人就能构成一个宇宙。群里吵架你默默退群，别人发疯你冷眼旁观。'},
+{id:'angelwa',name:'天使奶蛙',r:'hidden',em:'😇',file:'angelwa.jpg',desc:'奶蛙二创图鉴特殊款，善良值拉满。你是“劝架但越劝越乱”的老好人，看到别人难过会第一时间递纸巾。翅膀不大，但足够护住身边的人。'},
+{id:'frogod',name:'奶蛙神',r:'hidden',em:'🔮',file:'frogod.jpg',desc:'奶家宇宙的终极抽象形态，只有极端行为组合才能召唤。你已经超越了普通抽象，进入了“抽象本身”的境界。别人问你为什么，你说：“安迪。”'}
+];
+var CM={};CHARS.forEach(function(c){CM[c.id]=c});
+
+// ===== 2. 题库（基于 MBTI 维度计分） =====
+// tag 对应的 5 个维度：abstract(抽象), chill(摆烂), sigma(独狼), kind(善良), reliable(靠谱)
+var QS=[
+{q:'你在路上看到一坨会动的奶黄色球体，你的第一反应是？',o:[
+{t:'上去踹一脚看看会不会爆',tag:{chaos:1,abstract:1}},
+{t:'蹲下来跟它对视十分钟',tag:{chill:2}},
+{t:'掏出手机拍下来发群里',tag:{abstract:2}},
+{t:'绕道走，怕被缠上',tag:{sigma:2}}]},
+{q:'朋友半夜三点给你发了个抽象表情包，你？',o:[
+{t:'秒回一个更抽象的',tag:{abstract:2}},
+{t:'回个“？”然后继续睡',tag:{chill:2}},
+{t:'直接打电话过去问咋了',tag:{kind:1,chaos:1}},
+{t:'截图存档，以后当把柄',tag:{sigma:1,chaos:1}}]},
+{q:'你手机电量只剩1%，你会？',o:[
+{t:'疯狂刷视频直到关机',tag:{abstract:2}},
+{t:'淡定放下，关机就关机',tag:{chill:2}},
+{t:'到处找充电宝，焦虑',tag:{chaos:2}},
+{t:'早就备好充电宝，稳',tag:{reliable:2}}]},
+{q:'群里有人吵起来了，你？',o:[
+{t:'拱火，发更多抽象图',tag:{abstract:1,chaos:1}},
+{t:'潜水看戏',tag:{chill:1,sigma:1}},
+{t:'劝架但越劝越乱',tag:{kind:2}},
+{t:'默默退群',tag:{sigma:2}}]},
+{q:'如果奶家人要选一个当班长，你投谁？',o:[
+{t:'奶鸡，看着就靠谱',tag:{reliable:2}},
+{t:'奶蛙，就要抽象的',tag:{abstract:2}},
+{t:'奶猪，躺平也是一种管理',tag:{chill:2}},
+{t:'奶狗，热情能感染所有人',tag:{chaos:2}}]},
+{q:'你半夜刷到奶蛙视频，你的第一反应是？',o:[
+{t:'笑出声，然后转发给所有人',tag:{abstract:2}},
+{t:'看完了，面无表情，继续刷',tag:{chill:2}},
+{t:'这是什么鬼，但看完了',tag:{chaos:2}},
+{t:'收藏，以后当素材用',tag:{sigma:2}}]},
+{q:'你的精神状态更接近哪种？',o:[
+{t:'随时准备发疯',tag:{abstract:2}},
+{t:'表面平静，内心也平静',tag:{chill:2}},
+{t:'焦虑但充满热情',tag:{chaos:2}},
+{t:'看透一切，懒得解释',tag:{sigma:2}}]},
+{q:'朋友难过的时候，你会？',o:[
+{t:'发一堆抽象表情包逗他笑',tag:{abstract:1,kind:1}},
+{t:'安静陪着，不说什么',tag:{chill:1,kind:1}},
+{t:'问清楚原因，帮他解决',tag:{reliable:2}},
+{t:'递纸巾，然后一起骂',tag:{kind:2}}]},
+{q:'你出门必带的东西是？',o:[
+{t:'手机，没电会死',tag:{abstract:2}},
+{t:'什么都不带，轻装上阵',tag:{chill:2}},
+{t:'充电宝+纸巾+零食',tag:{reliable:2}},
+{t:'带个脑子就够了',tag:{sigma:2}}]},
+{q:'如果让你当一天奶家人，你选？',o:[
+{t:'奶蛙，当万恶之源',tag:{abstract:2}},
+{t:'奶蛋，当轮椅战神',tag:{chill:2}},
+{t:'奶豆，当可爱担当',tag:{kind:2}},
+{t:'奶猪，当二大爷',tag:{chill:1,sigma:1}}]},
+{q:'看到别人在朋友圈发抽象内容，你？',o:[
+{t:'评论一个更抽象的',tag:{abstract:2}},
+{t:'点个赞，不说话',tag:{chill:2}},
+{t:'私聊问他是不是有事',tag:{kind:2}},
+{t:'截图发给别人一起笑',tag:{sigma:1,chaos:1}}]},
+{q:'你的社交风格是？',o:[
+{t:'群里的气氛担当',tag:{chaos:2}},
+{t:'潜水但每条都看',tag:{chill:1,sigma:1}},
+{t:'只跟少数人深聊',tag:{sigma:2}},
+{t:'谁都聊，但谁都不太熟',tag:{sigma:1,chaos:1}}]},
+{q:'你更认同哪句话？',o:[
+{t:'“抽象是一种生活态度”',tag:{abstract:2}},
+{t:'“躺平不是放弃，是选择”',tag:{chill:2}},
+{t:'“靠谱是对自己负责”',tag:{reliable:2}},
+{t:'“一个人也挺好”',tag:{sigma:2}}]},
+{q:'如果抽到隐藏款，你会？',o:[
+{t:'截图发朋友圈，疯狂炫耀',tag:{abstract:2}},
+{t:'哦，然后继续该干嘛干嘛',tag:{chill:2}},
+{t:'分享给朋友，让他们也测',tag:{kind:2}},
+{t:'默默收藏，不告诉任何人',tag:{sigma:2}}]},
+{q:'最后一题：你觉得奶家宇宙的本质是？',o:[
+{t:'抽象，纯粹的抽象',tag:{abstract:2}},
+{t:'摆烂，但暗藏神力',tag:{chill:2}},
+{t:'一群人热热闹闹在一起',tag:{chaos:1,kind:1}},
+{t:'每个人都是一座孤岛',tag:{sigma:2}}]}
+];
+
+var cur=0, dim={abstract:0,chill:0,sigma:0,kind:0,chaos:0,reliable:0},KEY='naijia_unlocked_v2';
+
+// ===== 3. 核心逻辑 =====
+function getUnlocked(){try{var r=localStorage.getItem(KEY);return r?JSON.parse(r):[]}catch(e){return[]}}
+function saveUnlocked(id){var l=getUnlocked();if(l.indexOf(id)===-1){l.push(id);try{localStorage.setItem(KEY,JSON.stringify(l))}catch(e){}}}
+function show(id){var v=document.querySelectorAll('.view');for(var i=0;i<v.length;i++)v[i].classList.remove('active');document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function updateHomeCount(){var n=getUnlocked().length;var el=document.getElementById('homeCount');if(el)el.textContent=n>0?'('+n+'/'+CHARS.length+')':''}
+
+function startQuiz(){
+  cur=0; dim={abstract:0,chill:0,sigma:0,kind:0,chaos:0,reliable:0};
+  show('v-quiz'); renderQ();
+}
+function renderQ(){
+  var q=QS[cur];
+  document.getElementById('qn').textContent='QUESTION '+(cur+1);
+  document.getElementById('qt').textContent=q.q;
+  document.getElementById('cnt').textContent=(cur+1)+'/'+QS.length;
+  document.getElementById('pb').style.width=(cur/QS.length*100)+'%';
+  var box=document.getElementById('opts');box.innerHTML='';
+  var keys=['A','B','C','D'];
+  q.o.forEach(function(o,i){
+    var b=document.createElement('button');b.className='opt';
+    b.innerHTML='<span class="key">'+keys[i]+'</span><span>'+o.t+'</span>';
+    b.onclick=function(){pick(b,o)};box.appendChild(b);
+  });
+}
+function pick(b,o){
+  if(b.classList.contains('sel'))return;
+  var all=document.querySelectorAll('.opt');for(var i=0;i<all.length;i++)all[i].classList.remove('sel');
+  b.classList.add('sel');
+  // 维度加分
+  if(o.tag){ for(var k in o.tag){ dim[k] += o.tag[k]; } }
+  setTimeout(function(){cur++;if(cur<QS.length)renderQ();else done()},300);
+}
+
+// ===== 4. 结算与判定（解决平局与角色匹配） =====
+function done(){
+  var resId = 'naidan'; // 默认兜底
+  var maxA = dim.abstract, maxC = dim.chill, maxS = dim.sigma;
+  var maxK = dim.kind, maxX = dim.chaos, maxR = dim.reliable;
+
+  // 1. 隐藏款触发逻辑（特定组合）
+  if (maxA >= 8 && maxX >= 5) {
+    resId = 'frogod'; // 极致抽象 + 爱拱火
+  } else if (maxS >= 8 && maxK <= 2) {
+    resId = 'sigmawai'; // 极致独狼 + 不善良
+  } else if (maxK >= 8 && maxA <= 4) {
+    resId = 'angelwa'; // 极致善良 + 不抽象
+  } 
+  // 2. 普通/稀有款匹配逻辑（谁的特质最突出就是谁）
+  else {
+    if (maxR >= 6 && maxK >= 4 && maxA <= 3) {
+      resId = 'naifen'; // 靠谱 + 善良 = 奶粉
+    } else if (maxR >= 4 && maxC >= 4 && maxA <= 3) {
+      resId = 'naicha'; // 靠谱 + 情绪稳定 + 不抽象 = 奶茶（精准狙击）
+    } else if (maxC >= 6 && maxS >= 4) {
+      resId = 'naizhu'; // 摆烂 + 独狼 = 奶猪
+    } else if (maxA >= 6 && maxK >= 3) {
+      resId = 'dounai'; // 抽象 + 有点善良 = 豆奶
+    } else if (maxX >= 6 && maxA >= 4) {
+      resId = 'naigou'; // 爱玩 + 抽象 = 奶狗
+    } else if (maxS >= 6) {
+      resId = 'naishu'; // 独狼高分 = 奶鼠
+    } else if (maxC >= 6) {
+      resId = 'naidan'; // 极致摆烂 = 奶蛋
+    } else if (maxK >= 5) {
+      resId = 'naiji'; // 善良靠谱 = 奶鸡
+    } else if (maxA >= 5) {
+      resId = 'naiwa'; // 抽象最高 = 奶蛙
+    } else {
+      // 如果你选了非常平庸的选项，没有特别突出的特质，按“最中庸”的给奶豆
+      resId = 'naidou';
+    }
+  }
+  
+  saveUnlocked(resId);
+  renderResult(CM[resId]); 
+  show('v-result');
+}
+
+function renderResult(c){
+  var rm={common:['普通款','rc','⭐'],rare:['稀有款','rr','⭐⭐⭐'],hidden:['隐藏款','rh','⭐⭐⭐⭐⭐']};
+  var r=rm[c.r];
+  var img='<img src="images/'+c.file+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span class="fb" style="display:none">'+c.em+'</span>';
+  var share='我是【'+c.name+'】，'+r[2]+' '+r[0]+'！你是哪种奶家人？快来测测看 →';
+  document.getElementById('card').innerHTML=
+    '<div class="iw">'+img+'</div>'+
+    '<div class="rt '+r[1]+'">'+r[2]+' '+r[0]+'</div>'+
+    '<div class="rn">'+c.name+'</div>'+
+    '<div class="rd">'+c.desc+'</div>'+
+    '<div class="sb"><div class="sl">分享文案</div><div class="st">'+share+'</div></div>'+
+    '<div class="ra"><button class="btn btn-p" id="again">再测一次</button>'+
+    '<button class="btn btn-s" id="goGallery">看图鉴</button></div>'+
+    '<div class="ra2"><button class="btn btn-s" id="copy">复制分享文案</button></div>';
+  document.getElementById('again').onclick=startQuiz;
+  document.getElementById('goGallery').onclick=openGallery;
+  document.getElementById('copy').onclick=function(){
+    if(navigator.clipboard){navigator.clipboard.writeText(share).then(function(){alert('已复制！')})}
+    else{alert('请手动复制：\n'+share)}
+  };
+}
+
+function openGallery(){
+  updateHomeCount();
+  var unlocked=getUnlocked();
+  var gp=document.getElementById('gp');
+  gp.textContent='已收集 '+unlocked.length+' / '+CHARS.length;
+  var grid=document.getElementById('grid');grid.innerHTML='';
+  CHARS.forEach(function(c){
+    var isUn=unlocked.indexOf(c.id)!==-1;
+    var div=document.createElement('div');
+    div.className='gc'+(isUn?'':' lock');
+    var dotCls=c.r==='common'?'dc':(c.r==='rare'?'dr':'dh');
+    var imgHtml=isUn
+      ? '<img src="images/'+c.file+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span class="gfb" style="display:none">'+c.em+'</span>'
+      : '<span class="glock">🔒</span>';
+    div.innerHTML='<div class="gi">'+imgHtml+'</div>'+
+      '<div class="dot '+dotCls+'"></div>'+
+      '<div class="gn">'+(isUn?c.name:'???')+'</div>';
+    if(isUn)div.onclick=function(){showDetail(c)};
+    grid.appendChild(div);
+  });
+  var egg=document.getElementById('egg');
+  if(unlocked.length>=CHARS.length)egg.classList.add('show');else egg.classList.remove('show');
+  show('v-gallery');
+}
+
+function showDetail(c){
+  var rm={common:['普通款','rc','⭐'],rare:['稀有款','rr','⭐⭐⭐'],hidden:['隐藏款','rh','⭐⭐⭐⭐⭐']};
+  var r=rm[c.r];
+  var img='<img src="images/'+c.file+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span class="fb" style="display:none">'+c.em+'</span>';
+  document.getElementById('mc').innerHTML=
+    '<div class="mi">'+img+'</div>'+
+    '<div class="rt '+r[1]+'">'+r[2]+' '+r[0]+'</div>'+
+    '<div class="mn">'+c.name+'</div>'+
+    '<div class="md">'+c.desc+'</div>'+
+    '<button class="btn btn-s" id="closeM">关闭</button>';
+  document.getElementById('mo').classList.add('show');
+  document.getElementById('closeM').onclick=function(){document.getElementById('mo').classList.remove('show')};
+}
+document.getElementById('mo').onclick=function(e){if(e.target===this)this.classList.remove('show')};
+document.getElementById('start').onclick=startQuiz;
+document.getElementById('galleryBtn').onclick=openGallery;
+document.getElementById('galleryBack').onclick=function(){updateHomeCount();show('v-home')};
+document.getElementById('quit').onclick=function(){if(confirm('退出测试？')){startQuiz();show('v-home')}};
+updateHomeCount();
+</script>
+</body>
+</html>
